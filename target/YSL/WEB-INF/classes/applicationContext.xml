@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.alibaba.com/schema/stat http://www.alibaba.com/schema/stat.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        <!--spring容器(spring配置文件):包括mybatis和spring的一些东西-->
+        <!--扫描包-->
+        <context:component-scan base-package="com.swjd.*"></context:component-scan>
+        <!--加载外部数据库文件-->
+        <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+        <!--配置德鲁伊连接池-->
+        <bean id="ds" class="com.alibaba.druid.pool.DruidDataSource">
+                <property name="driverClassName" value="${jdbc.driverClass}"></property>
+                <property name="password" value="${jdbc.password}"></property>
+                <property name="url" value="${jdbc.url}"></property>
+                <property name="username" value="${jdbc.user}"></property>
+        </bean>
+        <!--整合mybatis框架,获取mybatis的工厂-->
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+                <!--(1)配置数据源-->
+                <property name="dataSource" ref="ds"></property>
+                <!--(2)指定一个mybatis映射文件的位置-->
+                <property name="mapperLocations" value="classpath:com/swjd/mapper/*.xml"></property>
+                <!--配置实体类别名-->
+                <property name="typeAliasesPackage" value="com.swjd.bean"></property>
+        </bean>
+        <!--配置mybatis的接口层,让spring自动生成实现类-->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+                <!--配置哪个包自动生成实现类-->
+                <property name="basePackage" value="com.swjd.mapper"></property>
+        </bean>
+        <!--配置声明式事物-->
+        <!--(1)(开启平台:mybatis平台DataSourceTransactionManager)-->
+        <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                <property name="dataSource" ref="ds"></property>
+        </bean>
+        <!--2.开启注解事物管理-->
+        <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+</beans>

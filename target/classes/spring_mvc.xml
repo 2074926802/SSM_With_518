@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.alibaba.com/schema/stat http://www.alibaba.com/schema/stat.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        <!--这是springMVC的配置文件:只用于配置springMVC相关的-->
+        <!--扫描(只需要扫描controller)-->
+        <context:component-scan base-package="com.swjd.controller"/>
+        <!--配置视图解析器-->
+        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+                <property name="prefix" value="/WEB-INF/jsp/"></property>
+                <property name="suffix" value=".jsp"></property>
+        </bean>
+        <!--开启注解注册springMVC的一些组件-->
+        <mvc:annotation-driven/>
+        <!--放行静态资源-->
+        <mvc:default-servlet-handler/>
+
+        <!--根据实际情况来写-->
+        <!--5.配置拦截器-->
+<!--        <mvc:interceptors>-->
+<!--        <mvc:interceptor>-->
+<!--                &lt;!&ndash;拦截哪些请求（/**表示所有请求）&ndash;&gt;-->
+<!--                <mvc:mapping path="/**"/>-->
+<!--                &lt;!&ndash;拦截器有可能会拦截掉静态资源，所以需要放行&ndash;&gt;-->
+<!--                <mvc:exclude-mapping path="/**/*.js"/>-->
+<!--                &lt;!&ndash;把自定义拦截器创建出来&ndash;&gt;-->
+<!--                <bean id="loginInterceptor" class="com.swjd.Interceptor.LoginInterceptor"></bean>-->
+<!--        </mvc:interceptor>-->
+<!--</mvc:interceptors>-->
+</beans>
